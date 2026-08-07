@@ -137,9 +137,9 @@
 </div>
 
 <script>
-// ===== Guthaben: eigenes Demo-Guthaben (localStorage 'gk_balance') =====
+// ===== Guthaben: gemeinsam mit der Website (localStorage 'gk_balance') =====
 let balance = parseFloat(localStorage.getItem('gk_balance'));
-if(isNaN(balance)){ balance = 1000; }
+if(isNaN(balance)){ balance = 0; }
 let bet = 10;
 function saveBal(){ try{ localStorage.setItem('gk_balance', String(balance)); }catch(e){} }
 
@@ -273,7 +273,10 @@ function updateHUD(){
   document.getElementById('betVal').textContent = Math.round(bet);
   const b = document.getElementById('mainBtn');
   if (phase==='flying' && inBet && !cashed){ b.textContent='Auszahlen  €'+(bet*multiplier).toFixed(2); b.classList.add('cash'); b.disabled=false; }
-  else if (phase==='idle'){ b.textContent = inBet ? 'Warte auf Start…' : 'Einsatz setzen'; b.classList.remove('cash'); b.disabled=inBet; }
+  else if (phase==='idle'){
+    if(!inBet && balance<=0){ b.textContent='Guthaben aufladen →'; b.classList.remove('cash'); b.disabled=false; }
+    else { b.textContent = inBet ? 'Warte auf Start…' : 'Einsatz setzen'; b.classList.remove('cash'); b.disabled=inBet; }
+  }
   else { b.classList.remove('cash'); b.disabled=true; b.textContent = inBet&&cashed?'Ausgezahlt ✓':(phase==='flying'?'Fliegt…':'…'); }
 }
 function renderHistory(){
@@ -283,7 +286,10 @@ function renderHistory(){
 }
 function mainAction(){
   if (phase==='flying' && inBet && !cashed) cashOut();
-  else if (phase==='idle' && !inBet) placeBet();
+  else if (phase==='idle' && !inBet){
+    if(balance<=0){ location.href='index.html'; return; }
+    placeBet();
+  }
 }
 document.getElementById('mainBtn').onclick=mainAction;
 document.getElementById('minus').onclick=()=>{ if(phase==='idle'&&!inBet) bet=Math.max(1,Math.min(balance,bet-5)); updateHUD(); };
@@ -302,6 +308,11 @@ function loop(now){
   requestAnimationFrame(loop);
 }
 renderHistory(); updateHUD(); requestAnimationFrame(loop);
+
+// Guthaben mit der Website synchronisieren (anderer Tab)
+window.addEventListener('storage', function(e){
+  if(e.key==='gk_balance'){ balance=parseFloat(e.newValue||'0')||0; updateHUD(); }
+});
 </script>
 </body>
 </html>

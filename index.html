@@ -202,6 +202,40 @@
   .modal .sub:hover{filter:brightness(1.06);}
   .modal .note{text-align:center;font-size:11.5px;color:var(--dim);margin-top:18px;}
 
+  /* ===== Wallet + Konto ===== */
+  .wallet{display:flex;align-items:center;gap:9px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--stroke2);border-radius:12px;padding:7px 8px 7px 13px;font-weight:800;}
+  .wallet .coin{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe8a3,var(--gold));border:2px solid #b5872b;display:flex;align-items:center;justify-content:center;font-size:11px;color:#5a4108;font-weight:900;}
+  .wallet #gkBal{font-family:var(--serif);font-size:19px;color:var(--gold-lt);min-width:56px;}
+  .dep-btn,.wd-btn{border:none;cursor:pointer;font-family:var(--sans);font-weight:800;font-size:12.5px;border-radius:9px;padding:9px 12px;transition:.14s;}
+  .dep-btn{background:linear-gradient(180deg,var(--gold-lt),var(--gold-dk));color:#2a2005;}
+  .wd-btn{background:var(--panel3);color:var(--gold-lt);border:1px solid var(--stroke2);}
+  .dep-btn:hover{filter:brightness(1.06);} .wd-btn:hover{border-color:var(--gold);}
+  .userchip{display:flex;align-items:center;gap:9px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--stroke2);border-radius:11px;padding:6px 13px 6px 6px;font-weight:700;cursor:pointer;font-size:14px;}
+  .userchip:hover{border-color:var(--gold);}
+  .userchip .ua{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--gold-dk),#5f4c18);display:flex;align-items:center;justify-content:center;color:#2a2005;font-size:13px;font-weight:900;}
+  .userchip .lo{font-size:11px;color:var(--muted);margin-left:2px;}
+  .simbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:var(--gold-lt);border:1px solid var(--gold-dk);background:rgba(212,175,55,.06);border-radius:999px;padding:3px 10px;margin-top:10px;}
+  .coins{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px;}
+  .coin-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 4px;border:1px solid var(--stroke2);border-radius:12px;cursor:pointer;background:var(--bg2);transition:.12s;}
+  .coin-opt:hover{border-color:var(--gold);}
+  .coin-opt.on{border-color:var(--gold);background:rgba(212,175,55,.10);}
+  .coin-opt .cc{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:16px;}
+  .coin-opt .cn{font-size:10px;color:var(--muted);font-weight:800;}
+  .dep-amt{width:100%;background:var(--bg2);border:1px solid var(--stroke2);border-radius:11px;padding:14px;color:var(--text);font-size:16px;font-family:var(--sans);outline:none;}
+  .dep-amt:focus{border-color:var(--gold);}
+  .conv{margin-top:12px;text-align:center;font-size:13.5px;color:var(--muted);min-height:18px;}
+  .conv b{color:var(--gold-lt);font-family:ui-monospace,Consolas,monospace;}
+  .rate-hint{text-align:center;font-size:11px;color:var(--dim);margin-top:6px;}
+  .simaddr{margin-top:16px;background:var(--bg2);border:1px dashed var(--gold-dk);border-radius:12px;padding:16px;text-align:center;}
+  .simaddr .qr{width:104px;height:104px;margin:0 auto 12px;border-radius:10px;background:repeating-conic-gradient(#2a2416 0% 25%,#0c0a06 0% 50%) 50%/17px 17px;display:flex;align-items:center;justify-content:center;color:var(--gold-lt);font-weight:900;letter-spacing:1px;border:1px solid var(--stroke2);}
+  .simaddr .ad{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;color:var(--gold-lt);word-break:break-all;font-weight:700;}
+  .simaddr .warn{font-size:11px;color:var(--muted);margin-top:8px;}
+  .count{text-align:center;padding:14px 0;}
+  .count .big{font-size:46px;font-weight:700;letter-spacing:2px;color:var(--gold-lt);font-family:var(--serif);font-variant-numeric:tabular-nums;}
+  .count .st{color:var(--muted);font-size:13px;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .count .spin{width:14px;height:14px;border:2px solid var(--stroke2);border-top-color:var(--gold);border-radius:50%;animation:sp 1s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+
   /* ===== Responsive ===== */
   @media(max-width:960px){
     .hero-grid{grid-template-columns:1fr;gap:20px;} .hero-visual{height:340px;order:-1;}
@@ -273,9 +307,16 @@
       <a href="#support">Support</a>
     </nav>
     <div class="actions">
-      <button class="btn btn-ghost" onclick="openAuth('login')">Anmelden</button>
-      <button class="btn btn-gold" onclick="openAuth('reg')">Registrieren</button>
-      <button class="burger" onclick="openAuth('login')"><svg class="ic"><use href="#i-menu"/></svg></button>
+      <div class="wallet" id="walletBox" style="display:none">
+        <span class="coin">€</span><span id="gkBal">0.00</span>
+        <button class="dep-btn" onclick="openDep()">+ Einzahlen</button>
+        <button class="wd-btn" onclick="openWd()">− Auszahlen</button>
+      </div>
+      <div class="actions" id="authArea">
+        <button class="btn btn-ghost" onclick="openAuth('login')">Anmelden</button>
+        <button class="btn btn-gold" onclick="openAuth('reg')">Registrieren</button>
+      </div>
+      <button class="burger" onclick="openAuth('reg')"><svg class="ic"><use href="#i-menu"/></svg></button>
     </div>
   </div>
 </header>
@@ -493,6 +534,76 @@
   </div>
 </div>
 
+<!-- ===== Einzahlung (Krypto — SIMULATION, keine echte Adresse) ===== -->
+<div class="modal-bg" id="depModal">
+  <div class="modal">
+    <button class="x" onclick="closeDep()">×</button>
+    <div class="top">
+      <div class="name serif" style="font-size:22px">Guthaben <span class="gold">einzahlen</span></div>
+      <div><span class="simbadge">⚠ Simulation</span></div>
+    </div>
+    <div class="mbody">
+      <div id="depStep1">
+        <label>Betrag (€)</label>
+        <input class="dep-amt" id="depAmt" type="number" value="100" min="1" oninput="updateDepConv()">
+        <label style="margin-top:14px">Kryptowährung wählen</label>
+        <div class="coins" id="coins"></div>
+        <div class="conv" id="depConv"></div>
+        <div class="rate-hint" id="depRate"></div>
+        <button class="sub" onclick="depContinue()">Weiter</button>
+      </div>
+      <div id="depStep2" style="display:none">
+        <div class="simaddr">
+          <div class="qr">SIM</div>
+          <div class="ad" id="simAddr">Simulation — keine echte Adresse</div>
+          <div class="warn">Dies ist eine Simulation. Sende keine echte Kryptowährung.</div>
+        </div>
+        <div style="text-align:center;margin-top:12px;color:var(--muted);font-size:14px" id="depSummary"></div>
+        <button class="sub" onclick="depPaid()">Ich habe bezahlt</button>
+      </div>
+      <div id="depStep3" style="display:none">
+        <div class="count" id="countBox">
+          <div class="big" id="countTime">15:00</div>
+          <div class="st"><span class="spin"></span> Zahlung wird geprüft…</div>
+        </div>
+        <div style="text-align:center;color:var(--dim);font-size:11.5px">Simulation · Es findet keine echte Zahlung statt</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Auszahlung (Krypto — SIMULATION, eigene Empfängeradresse) ===== -->
+<div class="modal-bg" id="wdModal">
+  <div class="modal">
+    <button class="x" onclick="closeWd()">×</button>
+    <div class="top">
+      <div class="name serif" style="font-size:22px">Guthaben <span class="gold">auszahlen</span></div>
+      <div><span class="simbadge">⚠ Simulation</span></div>
+    </div>
+    <div class="mbody">
+      <div id="wdStep1">
+        <label>Betrag (€)</label>
+        <input class="dep-amt" id="wdAmt" type="number" value="0" min="1" oninput="updateWdConv()">
+        <label style="margin-top:14px">Kryptowährung wählen</label>
+        <div class="coins" id="wdCoins"></div>
+        <div class="conv" id="wdConv"></div>
+        <div class="rate-hint" id="wdRate"></div>
+        <label style="margin-top:14px">Deine Wallet-Adresse</label>
+        <input class="dep-amt" id="wdAddr" placeholder="Empfängeradresse (z.B. bc1… / 0x…)" autocomplete="off" style="font-family:ui-monospace,Consolas,monospace;font-size:13px">
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">⚠ Gib nur deine öffentliche Empfängeradresse ein. Niemals privaten Schlüssel oder Seed-Phrase eingeben.</div>
+        <div id="wdErr" style="color:var(--red);font-size:12px;text-align:center;margin-top:10px;display:none"></div>
+        <button class="sub" onclick="wdSubmit()">Auszahlen</button>
+      </div>
+      <div id="wdStep2" style="display:none">
+        <div class="count" id="wdBox">
+          <div class="st" style="font-size:15px"><span class="spin"></span> Anfrage wird bearbeitet… (Simulation)</div>
+        </div>
+        <div style="text-align:center;color:var(--dim);font-size:11.5px;margin-top:12px">Simulation · Es findet keine echte Auszahlung statt</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   var authMode='reg';
   var authModal=document.getElementById('authModal');
@@ -507,20 +618,123 @@
     document.getElementById('regConfirm').style.display=reg?'block':'none';
     document.getElementById('authSubmit').textContent=reg?'Registrieren':'Anmelden';
   }
+  function showAuthErr(msg){ var e=document.getElementById('authErr'); e.textContent=msg; e.style.display='block'; }
+
+  // ===== Guthaben (gemeinsam mit Aviator: localStorage 'gk_balance') =====
+  var balance=0;
+  function saveBal(){ try{ localStorage.setItem('gk_balance', String(balance)); }catch(e){} var b=document.getElementById('gkBal'); if(b) b.textContent=balance.toFixed(2); }
+
+  // ===== Registrierung / Anmeldung (nur im Browser, localStorage 'gk_account') =====
   function doAuth(){
-    var err=document.getElementById('authErr');
-    var u=document.getElementById('fUser').value.trim();
-    var p=document.getElementById('fPass').value;
-    if(!u||!p){ err.textContent='Bitte E-Mail und Passwort eingeben.'; err.style.display='block'; return; }
-    if(authMode==='reg' && document.getElementById('fPass').value!==document.getElementById('fPass2').value){
-      err.textContent='Die Passwörter stimmen nicht überein.'; err.style.display='block'; return;
+    var user=(document.getElementById('fUser').value||'').trim();
+    var pass=(document.getElementById('fPass').value||'');
+    if(!user){ showAuthErr('Bitte E-Mail eingeben.'); document.getElementById('fUser').focus(); return; }
+    if(!pass){ showAuthErr('Bitte Passwort eingeben.'); document.getElementById('fPass').focus(); return; }
+    if(authMode==='reg'){
+      var name=(document.getElementById('fName').value||'').trim();
+      if(!name){ showAuthErr('Bitte Vorname eingeben.'); document.getElementById('fName').focus(); return; }
+      var p2=(document.getElementById('fPass2').value||'');
+      if(pass!==p2){ showAuthErr('Die Passwörter stimmen nicht überein.'); return; }
+      var sur=(document.getElementById('fSurname').value||'').trim();
+      var display=name+(sur?(' '+sur):'');
+      try{ localStorage.setItem('gk_account', JSON.stringify({username:user,pass:pass,display:display}));
+           localStorage.setItem('gk_user', display); }catch(e){}
+      balance=0; saveBal();
+      setUser(display); closeAuth();
+    } else {
+      var acc=null; try{ acc=JSON.parse(localStorage.getItem('gk_account')||'null'); }catch(e){}
+      if(!acc || acc.username!==user || acc.pass!==pass){ showAuthErr('E-Mail oder Passwort ist falsch.'); return; }
+      try{ localStorage.setItem('gk_user', acc.display); }catch(e){}
+      setUser(acc.display); closeAuth();
     }
-    err.style.display='none';
-    alert('Willkommen bei GOLDKAISER! (Demo — keine echte Registrierung)');
-    closeAuth();
   }
+  function setUser(name){
+    document.getElementById('authArea').style.display='none';
+    document.getElementById('walletBox').style.display='flex';
+    var burger=document.querySelector('.burger'); if(burger) burger.style.display='none';
+    var ini=(name.trim()[0]||'?').toUpperCase();
+    // ersetzt die Nav-Buttons durch einen Benutzer-Chip
+    var chip=document.getElementById('userChip');
+    if(!chip){ chip=document.createElement('div'); chip.id='userChip'; document.querySelector('.head .actions').appendChild(chip); }
+    chip.innerHTML='<div class="userchip" title="Abmelden" onclick="logout()"><span class="ua">'+ini+'</span>'+name+' <span class="lo">Abmelden</span></div>';
+  }
+  function logout(){ try{ localStorage.removeItem('gk_user'); }catch(e){} location.reload(); }
   authModal.addEventListener('click',function(e){ if(e.target.id==='authModal') closeAuth(); });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeAuth(); if(e.key==='Enter'&&authModal.classList.contains('on')) doAuth(); });
+
+  // ===== Einzahlung (Krypto — SIMULATION) =====
+  var COINS=[{k:'BTC',s:'₿',c:'#f7931a'},{k:'ETH',s:'Ξ',c:'#627eea'},{k:'USDT',s:'₮',c:'#26a17b'},{k:'TRX',s:'T',c:'#eb0029'},{k:'LTC',s:'Ł',c:'#345d9d'}];
+  // Beispielkurse: 1 Coin = X € (in einer echten Seite live; hier fester Demo-Wert)
+  var RATES={BTC:60000, ETH:3300, USDT:0.92, TRX:0.12, LTC:75};
+  var CDEC={BTC:6, ETH:5, USDT:2, TRX:2, LTC:4};
+  function fmtCoin(v,k){ return (v||0).toFixed(CDEC[k]||4); }
+  function rateHintTxt(k){ return '1 '+k+' ≈ '+RATES[k].toLocaleString('de-DE')+' €'; }
+  var depCoin='BTC', depTimer=null;
+  function updateDepConv(){ var amt=parseFloat(document.getElementById('depAmt').value)||0; var c=amt/RATES[depCoin];
+    document.getElementById('depConv').innerHTML = amt>0 ? 'Sende <b>~'+fmtCoin(c,depCoin)+' '+depCoin+'</b> &nbsp;·&nbsp; ≈ '+amt.toFixed(2)+' €' : '';
+    document.getElementById('depRate').textContent = rateHintTxt(depCoin); }
+  function buildCoins(){ var el=document.getElementById('coins'); el.innerHTML=''; COINS.forEach(function(c){
+    var d=document.createElement('div'); d.className='coin-opt'+(c.k===depCoin?' on':''); d.onclick=function(){depCoin=c.k; buildCoins();};
+    d.innerHTML='<span class="cc" style="background:'+c.c+'">'+c.s+'</span><span class="cn">'+c.k+'</span>'; el.appendChild(d); }); updateDepConv(); }
+  function showDepStep(n){ document.getElementById('depStep1').style.display=n===1?'block':'none';
+    document.getElementById('depStep2').style.display=n===2?'block':'none';
+    document.getElementById('depStep3').style.display=n===3?'block':'none'; }
+  function openDep(){ if(depTimer){clearInterval(depTimer);depTimer=null;} showDepStep(1); buildCoins(); document.getElementById('depModal').classList.add('on'); }
+  function closeDep(){ document.getElementById('depModal').classList.remove('on'); if(depTimer){clearInterval(depTimer);depTimer=null;} }
+  function depContinue(){ var amt=parseFloat(document.getElementById('depAmt').value)||0; if(amt<=0){document.getElementById('depAmt').focus();return;}
+    var c=amt/RATES[depCoin];
+    document.getElementById('depSummary').innerHTML='Sende <b style="color:var(--gold-lt)">~'+fmtCoin(c,depCoin)+' '+depCoin+'</b> &nbsp;·&nbsp; ≈ '+amt.toFixed(2)+' €'; showDepStep(2); }
+  function depPaid(){ showDepStep(3);
+    var left=15*60; var tEl=document.getElementById('countTime');
+    var render=function(){ var m=String(Math.floor(left/60)).padStart(2,'0'), s=String(left%60).padStart(2,'0'); tEl.textContent=m+':'+s; };
+    render();
+    depTimer=setInterval(function(){ left--; if(left<0)left=0; render(); if(left<=0){ clearInterval(depTimer); depTimer=null; depDone(); } },1000);
+  }
+  function depDone(){ var amt=parseFloat(document.getElementById('depAmt').value)||0; balance+=amt; saveBal();
+    document.getElementById('countBox').innerHTML='<div class="big" style="color:var(--green)">✓</div><div class="st">Zahlung bestätigt (Simulation)</div>';
+    setTimeout(closeDep,2600);
+  }
+  document.getElementById('depModal').addEventListener('click',function(e){ if(e.target.id==='depModal') closeDep(); });
+
+  // ===== Auszahlung (Krypto — SIMULATION, eigene Empfängeradresse) =====
+  var wdCoin='BTC';
+  function updateWdConv(){ var amt=parseFloat(document.getElementById('wdAmt').value)||0; var c=amt/RATES[wdCoin];
+    document.getElementById('wdConv').innerHTML = amt>0 ? 'Du erhältst <b>~'+fmtCoin(c,wdCoin)+' '+wdCoin+'</b> &nbsp;·&nbsp; '+amt.toFixed(2)+' €' : '';
+    document.getElementById('wdRate').textContent = rateHintTxt(wdCoin); }
+  function buildWdCoins(){ var el=document.getElementById('wdCoins'); el.innerHTML=''; COINS.forEach(function(c){
+    var d=document.createElement('div'); d.className='coin-opt'+(c.k===wdCoin?' on':''); d.onclick=function(){wdCoin=c.k; buildWdCoins();};
+    d.innerHTML='<span class="cc" style="background:'+c.c+'">'+c.s+'</span><span class="cn">'+c.k+'</span>'; el.appendChild(d); }); updateWdConv(); }
+  function showWdStep(n){ document.getElementById('wdStep1').style.display=n===1?'block':'none'; document.getElementById('wdStep2').style.display=n===2?'block':'none'; }
+  function openWd(){ showWdStep(1); document.getElementById('wdAmt').value=Math.floor(balance)||0; document.getElementById('wdAddr').value=''; document.getElementById('wdErr').style.display='none'; buildWdCoins(); document.getElementById('wdModal').classList.add('on'); }
+  function closeWd(){ document.getElementById('wdModal').classList.remove('on'); }
+  function wdErrMsg(m){ var e=document.getElementById('wdErr'); e.textContent=m; e.style.display='block'; }
+  function wdSubmit(){
+    var amt=parseFloat(document.getElementById('wdAmt').value)||0;
+    var addr=(document.getElementById('wdAddr').value||'').trim();
+    if(amt<=0){ document.getElementById('wdAmt').focus(); return; }
+    if(amt>balance){ wdErrMsg('Nicht genügend Guthaben.'); return; }
+    if(addr.length<6){ wdErrMsg('Bitte Empfängeradresse eingeben.'); return; }
+    showWdStep(2);
+    // Nur SIMULATION: es wird keine echte Kryptowährung gesendet, die Adresse wird nirgends gespeichert.
+    setTimeout(function(){ balance-=amt; saveBal();
+      document.getElementById('wdBox').innerHTML='<div class="st" style="color:var(--green);font-size:15px">✓ Auszahlungsanfrage erhalten (Simulation)</div>';
+      setTimeout(closeWd,2400);
+    }, 3000);
+  }
+  document.getElementById('wdModal').addEventListener('click',function(e){ if(e.target.id==='wdModal') closeWd(); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){ closeAuth(); closeDep(); closeWd(); }
+    if(e.key==='Enter'&&authModal.classList.contains('on')) doAuth();
+  });
+
+  // ===== Init =====
+  (function(){ try{
+    balance=parseFloat(localStorage.getItem('gk_balance')||'0')||0;
+    var b=document.getElementById('gkBal'); if(b) b.textContent=balance.toFixed(2);
+    var u=localStorage.getItem('gk_user'); if(u) setUser(u);
+  }catch(e){} })();
+  // Aviator ändert das Guthaben in einem anderen Tab -> hier aktualisieren
+  window.addEventListener('storage',function(e){ if(e.key==='gk_balance'){ balance=parseFloat(e.newValue||'0')||0; var b=document.getElementById('gkBal'); if(b) b.textContent=balance.toFixed(2); } });
 
   // Mini Aviator multiplier animation
   (function(){
