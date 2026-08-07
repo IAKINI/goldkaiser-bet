@@ -202,25 +202,54 @@
   .modal .sub:hover{filter:brightness(1.06);}
   .modal .note{text-align:center;font-size:11.5px;color:var(--dim);margin-top:18px;}
 
-  /* ===== Wallet + Konto ===== */
-  .wallet{display:flex;align-items:center;gap:9px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--stroke2);border-radius:12px;padding:7px 8px 7px 13px;font-weight:800;}
-  .wallet .coin{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe8a3,var(--gold));border:2px solid #b5872b;display:flex;align-items:center;justify-content:center;font-size:11px;color:#5a4108;font-weight:900;}
-  .wallet #gkBal{font-family:var(--serif);font-size:19px;color:var(--gold-lt);min-width:56px;}
-  .dep-btn,.wd-btn{border:none;cursor:pointer;font-family:var(--sans);font-weight:800;font-size:12.5px;border-radius:9px;padding:9px 12px;transition:.14s;}
-  .dep-btn{background:linear-gradient(180deg,var(--gold-lt),var(--gold-dk));color:#2a2005;}
-  .wd-btn{background:var(--panel3);color:var(--gold-lt);border:1px solid var(--stroke2);}
-  .dep-btn:hover{filter:brightness(1.06);} .wd-btn:hover{border-color:var(--gold);}
-  .userchip{display:flex;align-items:center;gap:9px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--stroke2);border-radius:11px;padding:6px 13px 6px 6px;font-weight:700;cursor:pointer;font-size:14px;}
-  .userchip:hover{border-color:var(--gold);}
-  .userchip .ua{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--gold-dk),#5f4c18);display:flex;align-items:center;justify-content:center;color:#2a2005;font-size:13px;font-weight:900;}
-  .userchip .lo{font-size:11px;color:var(--muted);margin-left:2px;}
+  /* ===== Konto-Dropdown (Guthaben + Ein-/Auszahlen im Menü) ===== */
+  .acct{position:relative;}
+  .acct-trigger{display:flex;align-items:center;gap:11px;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--stroke2);
+    border-radius:13px;padding:6px 13px 6px 6px;cursor:pointer;font-family:var(--sans);transition:.15s;}
+  .acct-trigger:hover{border-color:var(--gold);}
+  .acct-trigger .ua{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold-lt),var(--gold-dk));
+    display:flex;align-items:center;justify-content:center;color:#2a2005;font-size:15px;font-weight:900;flex:none;}
+  .acct-trigger .acct-info{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;}
+  .acct-trigger .acct-name{font-size:13px;font-weight:700;color:var(--text);}
+  .acct-trigger .acct-bal{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--gold-lt);}
+  .acct-trigger .chev{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;transition:transform .2s;}
+  .acct.open .acct-trigger .chev{transform:rotate(180deg);}
+  .acct-menu{position:absolute;top:calc(100% + 10px);right:0;width:250px;background:linear-gradient(180deg,var(--panel2),var(--panel));
+    border:1px solid var(--stroke2);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.6);padding:14px;z-index:40;
+    display:none;animation:dropIn .16s ease;}
+  .acct.open .acct-menu{display:block;}
+  @keyframes dropIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+  .am-bal{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:12px;background:rgba(212,175,55,.07);
+    border:1px solid var(--stroke2);margin-bottom:12px;}
+  .am-bal span{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:700;}
+  .am-bal b{font-family:var(--serif);font-size:28px;color:var(--gold-lt);line-height:1;}
+  .am-item{display:flex;align-items:center;gap:11px;width:100%;border:none;cursor:pointer;font-family:var(--sans);font-weight:700;
+    font-size:14px;border-radius:11px;padding:12px 14px;margin-bottom:6px;transition:.14s;text-align:left;}
+  .am-item svg{width:18px;height:18px;flex:none;}
+  .am-item.dep{background:linear-gradient(180deg,var(--gold-lt),var(--gold-dk));color:#2a2005;}
+  .am-item.dep:hover{filter:brightness(1.06);}
+  .am-item.wd{background:var(--panel3);color:var(--gold-lt);border:1px solid var(--stroke2);}
+  .am-item.wd:hover{border-color:var(--gold);}
+  .am-item.out{background:none;color:var(--muted);}
+  .am-item.out:hover{color:var(--red);background:rgba(192,57,43,.08);}
+  .am-item.out svg{stroke:currentColor;fill:none;stroke-width:1.8;}
+  .am-div{height:1px;background:var(--stroke2);margin:8px 2px;opacity:.6;}
   .simbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:var(--gold-lt);border:1px solid var(--gold-dk);background:rgba(212,175,55,.06);border-radius:999px;padding:3px 10px;margin-top:10px;}
-  .coins{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px;}
-  .coin-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 4px;border:1px solid var(--stroke2);border-radius:12px;cursor:pointer;background:var(--bg2);transition:.12s;}
-  .coin-opt:hover{border-color:var(--gold);}
-  .coin-opt.on{border-color:var(--gold);background:rgba(212,175,55,.10);}
-  .coin-opt .cc{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:16px;}
-  .coin-opt .cn{font-size:10px;color:var(--muted);font-weight:800;}
+  .coins{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+  .coin-opt{display:flex;align-items:center;gap:13px;padding:12px 14px;border:1px solid var(--stroke2);border-radius:13px;cursor:pointer;
+    background:var(--bg2);transition:.14s;position:relative;}
+  .coin-opt:hover{border-color:var(--gold);background:rgba(212,175,55,.04);}
+  .coin-opt.on{border-color:var(--gold);background:rgba(212,175,55,.09);box-shadow:inset 0 0 0 1px rgba(212,175,55,.25);}
+  .coin-opt .cc{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:19px;flex:none;
+    box-shadow:0 4px 12px rgba(0,0,0,.35);}
+  .coin-opt .cmeta{display:flex;flex-direction:column;line-height:1.25;flex:1;min-width:0;}
+  .coin-opt .cn{font-size:15px;color:var(--text);font-weight:800;letter-spacing:.3px;}
+  .coin-opt .cfull{font-size:11.5px;color:var(--dim);font-weight:600;}
+  .coin-opt .cr{font-size:11px;color:var(--muted);font-family:ui-monospace,Consolas,monospace;text-align:right;white-space:nowrap;}
+  .coin-opt .ck{width:22px;height:22px;border-radius:50%;border:2px solid var(--stroke2);flex:none;display:flex;align-items:center;justify-content:center;transition:.14s;}
+  .coin-opt.on .ck{border-color:var(--gold);background:var(--gold);}
+  .coin-opt .ck svg{width:12px;height:12px;stroke:#2a2005;stroke-width:3;fill:none;opacity:0;}
+  .coin-opt.on .ck svg{opacity:1;}
   .dep-amt{width:100%;background:var(--bg2);border:1px solid var(--stroke2);border-radius:11px;padding:14px;color:var(--text);font-size:16px;font-family:var(--sans);outline:none;}
   .dep-amt:focus{border-color:var(--gold);}
   .conv{margin-top:12px;text-align:center;font-size:13.5px;color:var(--muted);min-height:18px;}
@@ -307,10 +336,22 @@
       <a href="#support">Support</a>
     </nav>
     <div class="actions">
-      <div class="wallet" id="walletBox" style="display:none">
-        <span class="coin">€</span><span id="gkBal">0.00</span>
-        <button class="dep-btn" onclick="openDep()">+ Einzahlen</button>
-        <button class="wd-btn" onclick="openWd()">− Auszahlen</button>
+      <div class="acct" id="walletBox" style="display:none">
+        <button class="acct-trigger" onclick="toggleWallet(event)">
+          <span class="ua" id="acctIni">?</span>
+          <span class="acct-info">
+            <span class="acct-name" id="acctName">Konto</span>
+            <span class="acct-bal">€<span id="gkBal">0.00</span></span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="acct-menu" id="acctMenu">
+          <div class="am-bal"><span>Guthaben</span><b>€<span id="gkBal2">0.00</span></b></div>
+          <button class="am-item dep" onclick="openDep()"><svg viewBox="0 0 24 24" fill="none" stroke="#2a2005" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Einzahlen</button>
+          <button class="am-item wd" onclick="openWd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg> Auszahlen</button>
+          <div class="am-div"></div>
+          <button class="am-item out" onclick="logout()"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg> Abmelden</button>
+        </div>
       </div>
       <div class="actions" id="authArea">
         <button class="btn btn-ghost" onclick="openAuth('login')">Anmelden</button>
@@ -622,7 +663,14 @@
 
   // ===== Guthaben (gemeinsam mit Aviator: localStorage 'gk_balance') =====
   var balance=0;
-  function saveBal(){ try{ localStorage.setItem('gk_balance', String(balance)); }catch(e){} var b=document.getElementById('gkBal'); if(b) b.textContent=balance.toFixed(2); }
+  function saveBal(){ try{ localStorage.setItem('gk_balance', String(balance)); }catch(e){}
+    var b=document.getElementById('gkBal'); if(b) b.textContent=balance.toFixed(2);
+    var b2=document.getElementById('gkBal2'); if(b2) b2.textContent=balance.toFixed(2); }
+
+  // Konto-Dropdown öffnen/schließen
+  function toggleWallet(ev){ if(ev) ev.stopPropagation(); document.getElementById('walletBox').classList.toggle('open'); }
+  function closeWallet(){ var w=document.getElementById('walletBox'); if(w) w.classList.remove('open'); }
+  document.addEventListener('click',function(e){ var w=document.getElementById('walletBox'); if(w && w.classList.contains('open') && !w.contains(e.target)) closeWallet(); });
 
   // ===== Registrierung / Anmeldung (nur im Browser, localStorage 'gk_account') =====
   function doAuth(){
@@ -650,35 +698,39 @@
   }
   function setUser(name){
     document.getElementById('authArea').style.display='none';
-    document.getElementById('walletBox').style.display='flex';
+    document.getElementById('walletBox').style.display='block';
     var burger=document.querySelector('.burger'); if(burger) burger.style.display='none';
     var ini=(name.trim()[0]||'?').toUpperCase();
-    // ersetzt die Nav-Buttons durch einen Benutzer-Chip
-    var chip=document.getElementById('userChip');
-    if(!chip){ chip=document.createElement('div'); chip.id='userChip'; document.querySelector('.head .actions').appendChild(chip); }
-    chip.innerHTML='<div class="userchip" title="Abmelden" onclick="logout()"><span class="ua">'+ini+'</span>'+name+' <span class="lo">Abmelden</span></div>';
+    document.getElementById('acctIni').textContent=ini;
+    document.getElementById('acctName').textContent=name;
   }
   function logout(){ try{ localStorage.removeItem('gk_user'); }catch(e){} location.reload(); }
   authModal.addEventListener('click',function(e){ if(e.target.id==='authModal') closeAuth(); });
 
   // ===== Einzahlung (Krypto — SIMULATION) =====
-  var COINS=[{k:'BTC',s:'₿',c:'#f7931a'},{k:'ETH',s:'Ξ',c:'#627eea'},{k:'USDT',s:'₮',c:'#26a17b'},{k:'TRX',s:'T',c:'#eb0029'},{k:'LTC',s:'Ł',c:'#345d9d'}];
+  var COINS=[{k:'BTC',n:'Bitcoin',s:'₿',c:'#f7931a'},{k:'ETH',n:'Ethereum',s:'Ξ',c:'#627eea'},{k:'USDT',n:'Tether',s:'₮',c:'#26a17b'},{k:'TRX',n:'Tron',s:'T',c:'#eb0029'},{k:'LTC',n:'Litecoin',s:'Ł',c:'#345d9d'}];
   // Beispielkurse: 1 Coin = X € (in einer echten Seite live; hier fester Demo-Wert)
   var RATES={BTC:60000, ETH:3300, USDT:0.92, TRX:0.12, LTC:75};
   var CDEC={BTC:6, ETH:5, USDT:2, TRX:2, LTC:4};
   function fmtCoin(v,k){ return (v||0).toFixed(CDEC[k]||4); }
   function rateHintTxt(k){ return '1 '+k+' ≈ '+RATES[k].toLocaleString('de-DE')+' €'; }
+  function coinRowHTML(c,active){
+    return '<span class="cc" style="background:'+c.c+'">'+c.s+'</span>'+
+      '<span class="cmeta"><span class="cn">'+c.k+'</span><span class="cfull">'+c.n+'</span></span>'+
+      '<span class="cr">≈ '+RATES[c.k].toLocaleString('de-DE')+' €</span>'+
+      '<span class="ck"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="#2a2005" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+  }
   var depCoin='BTC', depTimer=null;
   function updateDepConv(){ var amt=parseFloat(document.getElementById('depAmt').value)||0; var c=amt/RATES[depCoin];
     document.getElementById('depConv').innerHTML = amt>0 ? 'Sende <b>~'+fmtCoin(c,depCoin)+' '+depCoin+'</b> &nbsp;·&nbsp; ≈ '+amt.toFixed(2)+' €' : '';
     document.getElementById('depRate').textContent = rateHintTxt(depCoin); }
   function buildCoins(){ var el=document.getElementById('coins'); el.innerHTML=''; COINS.forEach(function(c){
     var d=document.createElement('div'); d.className='coin-opt'+(c.k===depCoin?' on':''); d.onclick=function(){depCoin=c.k; buildCoins();};
-    d.innerHTML='<span class="cc" style="background:'+c.c+'">'+c.s+'</span><span class="cn">'+c.k+'</span>'; el.appendChild(d); }); updateDepConv(); }
+    d.innerHTML=coinRowHTML(c); el.appendChild(d); }); updateDepConv(); }
   function showDepStep(n){ document.getElementById('depStep1').style.display=n===1?'block':'none';
     document.getElementById('depStep2').style.display=n===2?'block':'none';
     document.getElementById('depStep3').style.display=n===3?'block':'none'; }
-  function openDep(){ if(depTimer){clearInterval(depTimer);depTimer=null;} showDepStep(1); buildCoins(); document.getElementById('depModal').classList.add('on'); }
+  function openDep(){ closeWallet(); if(depTimer){clearInterval(depTimer);depTimer=null;} showDepStep(1); buildCoins(); document.getElementById('depModal').classList.add('on'); }
   function closeDep(){ document.getElementById('depModal').classList.remove('on'); if(depTimer){clearInterval(depTimer);depTimer=null;} }
   function depContinue(){ var amt=parseFloat(document.getElementById('depAmt').value)||0; if(amt<=0){document.getElementById('depAmt').focus();return;}
     var c=amt/RATES[depCoin];
@@ -702,9 +754,9 @@
     document.getElementById('wdRate').textContent = rateHintTxt(wdCoin); }
   function buildWdCoins(){ var el=document.getElementById('wdCoins'); el.innerHTML=''; COINS.forEach(function(c){
     var d=document.createElement('div'); d.className='coin-opt'+(c.k===wdCoin?' on':''); d.onclick=function(){wdCoin=c.k; buildWdCoins();};
-    d.innerHTML='<span class="cc" style="background:'+c.c+'">'+c.s+'</span><span class="cn">'+c.k+'</span>'; el.appendChild(d); }); updateWdConv(); }
+    d.innerHTML=coinRowHTML(c); el.appendChild(d); }); updateWdConv(); }
   function showWdStep(n){ document.getElementById('wdStep1').style.display=n===1?'block':'none'; document.getElementById('wdStep2').style.display=n===2?'block':'none'; }
-  function openWd(){ showWdStep(1); document.getElementById('wdAmt').value=Math.floor(balance)||0; document.getElementById('wdAddr').value=''; document.getElementById('wdErr').style.display='none'; buildWdCoins(); document.getElementById('wdModal').classList.add('on'); }
+  function openWd(){ closeWallet(); showWdStep(1); document.getElementById('wdAmt').value=Math.floor(balance)||0; document.getElementById('wdAddr').value=''; document.getElementById('wdErr').style.display='none'; buildWdCoins(); document.getElementById('wdModal').classList.add('on'); }
   function closeWd(){ document.getElementById('wdModal').classList.remove('on'); }
   function wdErrMsg(m){ var e=document.getElementById('wdErr'); e.textContent=m; e.style.display='block'; }
   function wdSubmit(){
