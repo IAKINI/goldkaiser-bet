@@ -78,25 +78,29 @@
   .wallet-trigger .w-bal{font-family:var(--mono);font-size:14.5px;font-weight:700;color:var(--lime);}
   .wallet-trigger .chev{width:15px;height:15px;stroke:var(--muted);fill:none;stroke-width:2.2;transition:transform .2s;}
   .wallet.open .wallet-trigger .chev{transform:rotate(180deg);}
-  .wallet-menu{position:absolute;top:calc(100% + 10px);right:0;width:246px;background:var(--panel);
-    border:2px solid var(--stroke2);border-radius:10px;box-shadow:6px 6px 0 #000;padding:14px;z-index:40;
-    display:none;}
-  .wallet.open .wallet-menu{display:block;}
-  .w-bal-box{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:8px;background:var(--bg2);
-    border:1px solid var(--stroke);margin-bottom:12px;}
+  .wallet-menu{position:fixed;top:0;right:0;height:100%;width:100%;max-width:340px;background:var(--panel);
+    border-left:3px solid var(--lime);box-shadow:-10px 0 40px rgba(0,0,0,.5);z-index:40;padding:30px 22px;
+    display:flex;flex-direction:column;overflow-y:auto;
+    transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.3,1);}
+  .wallet.open .wallet-menu{transform:translateX(0);}
+  .wallet-menu .x{position:absolute;top:20px;right:20px;cursor:pointer;color:var(--muted);font-size:28px;line-height:1;background:none;border:none;font-family:var(--sans);}
+  .wallet-menu .x:hover{color:var(--lime);}
+  .wallet-menu .w-top{font-family:var(--display);font-size:22px;font-weight:800;margin-bottom:24px;}
+  .w-bal-box{display:flex;flex-direction:column;gap:5px;padding:18px 16px;border-radius:8px;background:var(--bg2);
+    border:1px solid var(--stroke);margin-bottom:22px;}
   .w-bal-box span{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);font-weight:700;font-family:var(--mono);}
-  .w-bal-box b{font-family:var(--mono);font-size:26px;color:var(--lime);line-height:1;}
+  .w-bal-box b{font-family:var(--mono);font-size:34px;color:var(--lime);line-height:1;}
   .w-item{display:flex;align-items:center;gap:11px;width:100%;border:2px solid transparent;cursor:pointer;font-family:var(--sans);font-weight:700;
-    font-size:13.5px;border-radius:8px;padding:11px 13px;margin-bottom:6px;transition:.14s;text-align:left;}
+    font-size:14px;border-radius:8px;padding:14px 15px;margin-bottom:10px;transition:transform .12s, box-shadow .12s;text-align:left;}
   .w-item svg{width:17px;height:17px;flex:none;}
-  .w-item.dep{background:var(--lime);color:#07080a;border-color:#07080a;}
-  .w-item.dep:hover{filter:brightness(1.06);}
+  .w-item.dep{background:var(--lime);color:#07080a;border-color:#07080a;box-shadow:4px 4px 0 #000;}
+  .w-item.dep:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000;}
   .w-item.wd{background:transparent;color:var(--text);border-color:var(--stroke2);}
   .w-item.wd:hover{border-color:var(--lime);}
-  .w-item.out{background:none;color:var(--muted);}
+  .w-item.out{background:none;color:var(--muted);border-color:transparent;margin-top:auto;}
   .w-item.out:hover{color:var(--red);}
   .w-item.out svg{stroke:currentColor;fill:none;stroke-width:1.8;}
-  .w-div{height:1px;background:var(--stroke);margin:8px 2px;}
+  .w-div{height:1px;background:var(--stroke);margin:4px 2px 16px;}
 
   /* ===== Hero ===== */
   .hero{padding:64px 0 0;}
@@ -315,6 +319,8 @@
           <svg class="chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="wallet-menu" id="acctMenu">
+          <button class="x" onclick="closeWallet()">×</button>
+          <div class="w-top">Cüzdan<span class="hl">.</span></div>
           <div class="w-bal-box"><span>Bakiye</span><b>₺<span id="gkBal2">0.00</span></b></div>
           <button class="w-item dep" onclick="openDep()"><svg viewBox="0 0 24 24" fill="none" stroke="#07080a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Para Yatır</button>
           <button class="w-item wd" onclick="openWd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg> Para Çek</button>
