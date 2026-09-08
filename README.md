@@ -1,6 +1,6 @@
-# GOLDKAISER — Premium Wetten
+# BETSPIN777 — Spin & Win
 
-Lüks siyah-altın temalı, Almanca bahis/casino sitesi + oynanabilir Aviator.
+Neon mor-pembe temalı, Almanca bahis/casino sitesi + oynanabilir Aviator.
 Masaüstü **tracker** ile çalışması için küçük bir Python **kanal sunucusu** içerir.
 
 ```
