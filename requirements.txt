@@ -1,2 +1,0 @@
-# server.py yalnizca Python standart kutuphanesini kullanir -> harici bagimlilik yok.
-# (pygame sadece masaustu oyunlar/tracker icin gerekir, sunucu icin degil.)
